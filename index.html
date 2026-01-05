@@ -296,13 +296,51 @@ function render(){
 }
 
 function sendOrder(){
- fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
-  method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body:JSON.stringify({chat_id:CHAT_ID,text:"Có đơn hàng mới"})
- }).then(()=>paymentBox.style.display="block");
-}
+  if(Object.keys(order).length === 0){
+    alert("❌ Chưa có sản phẩm nào trong đơn");
+    return;
+  }
 
+  let msg = `🛒 ĐƠN HÀNG MỚI\n\n` +
+            `👤 Tên: ${customerName.value}\n` +
+            `📞 SĐT: ${customerPhone.value}\n` +
+            `📍 Địa chỉ: ${customerAddress.value}\n\n` +
+            `📦 CHI TIẾT ĐƠN:\n`;
+
+  let total = 0;
+  for(let i in order){
+    let money = order[i].qty * order[i].price;
+    total += money;
+    msg += `- ${i}: ${order[i].qty} kg = ${money.toLocaleString()} đ\n`;
+  }
+
+  msg += `\n💰 TỔNG TIỀN: ${total.toLocaleString()} đ\n`;
+msg += `📝 Ghi chú: ${note.value || "Không có"}`;
+
+
+  fetch("https://api.telegram.org/bot8365554346:AAGJdRnQ9sbp2EQIGtP289uwuBwEp3bg-kE/sendMessage",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      chat_id: "6572363141",
+      text: msg
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.ok){
+      alert("✅ Đã gửi đơn hàng thành công");
+      paymentBox.style.display="block";
+    }else{
+      alert("❌ Telegram lỗi: " + data.description);
+      console.error(data);
+    }
+  })
+  .catch(err=>{
+    alert("❌ Không kết nối được Telegram");
+    console.error(err);
+  });
+}
 function showQR(){qrBox.style.display="block";}
 </script>
 
