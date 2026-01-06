@@ -294,6 +294,12 @@ let lastOrderMessage="";
 const order={};
 
 const products=[
+ {
+  name: "Lòng Nhồi", 
+  price: 50000, 
+  image: "https://dienmayhoki.com/wp-content/uploads/2023/10/cach-lam-doi-heo-1.jpg",
+  subTypes: ["Lòng Mỡ", "Lòng Tiết"] // Thêm dòng này
+ },
  {name:"Gan Lợn",price:50000,image:"https://media.cooky.vn/article/s640/Article1302-635894058266480200.jpg"},
  {name:"Phổi Lợn",price:30000,image:"https://bhd.1cdn.vn/2021/09/10/files-library-images-site-1-20210910-web-bo-phan-o-lon-tuyet-doi-phai-bo-keo-ca-nha-ung-thu-30-161959.jpg"},
  {name:"Chí Đá",price:450000,image:"https://cdn2.fptshop.com.vn/unsafe/800x0/bi_quyet_luoc_trang_lon_03_82bd2e013b.jpg"},
@@ -310,90 +316,38 @@ const products=[
 ];
 
 const productsDiv=document.getElementById("products");
-// 1. Lấy thông tin nguồn, thiết bị, IP ngay khi tải trang
-const urlParams = new URLSearchParams(window.location.search);
-const nguonTruyCap = urlParams.get('s') === 'qr' ? "Quét mã QR" : "Bấm đường Link";
-
-function getDevice() {
-    const ua = navigator.userAgent;
-    if (/android/i.test(ua)) return "Android";
-    if (/iPhone|iPad|iPod/i.test(ua)) return "iOS";
-    return "Máy tính/Khác";
-}
-
-let customerIP = "0.0.0.0";
-fetch('https://api.ipify.org?format=json')
-    .then(res => res.json()).then(data => customerIP = data.ip)
-    .catch(() => customerIP = "Ẩn danh");
-
-// 2. Hàm gửi dữ liệu khi nhấn thanh toán
-// Đảm bảo URL này là link Web App mới nhất sau khi bạn Deploy lại ở bước trên
-const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbwDAalCA5zLjHqFcIHXaBkc9GXNc4im1wvannW8NzPUNCoxpZYxNYXxjkISpWRNK-G4/exec";
-
-function sendPay(methodName) {
-    // Thu thập dữ liệu đơn hàng
-    let orderDetail = "";
-    let totalValue = 0;
-    for (let i in order) {
-        orderDetail += `${i} (${order[i].qty}kg); `;
-        totalValue += order[i].qty * order[i].price;
-    }
-
-    // Đối tượng dữ liệu khớp với hàm doPost trong Apps Script
-    const dataToSheet = {
-        name: document.getElementById("customerName").value,
-        phone: document.getElementById("customerPhone").value,
-        address: document.getElementById("customerAddress").value,
-        orderDetail: orderDetail,
-        total: totalValue.toLocaleString() + "đ",
-        method: methodName,
-        source: nguonTruyCap, // Biến này lấy từ URL ?s=qr
-        device: getDeviceInfo(),
-        ip: customerIP
-    };
-
-    // Gửi dữ liệu sang Google Sheet
-    fetch(GOOGLE_APP_URL, {
-        method: "POST",
-        mode: "no-cors", // Bắt buộc có để tránh lỗi CORS
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataToSheet)
-    }).then(() => {
-        console.log("Đã gửi đơn hàng lên Sheet thành công");
-    });
-
-    // Gửi Telegram (Giữ nguyên phần cũ của bạn)
-    const teleMsg = lastOrderMessage + `\n\n💳 ${methodName}\n📱 Thiết bị: ${dataToSheet.device}\n📍 Nguồn: ${nguonTruyCap}`;
-    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: CHAT_ID, text: teleMsg })
-    });
-
-    if(methodName.includes("QR")) {
-        qrBox.style.display = "block";
-    } else {
-        alert("Cảm ơn! Đơn hàng của bạn đã được Kiều Lòng tiếp nhận.");
-        location.reload(); // Tải lại trang để làm trống giỏ hàng
-    }
-}
-
-    // Phần gửi Telegram của bạn...
-    alert("Đơn hàng đang được gửi đi!");
-}
 
 function startShopping(){
  if(!customerName.value || !customerPhone.value || !customerAddress.value) { alert("Vui lòng nhập đủ thông tin!"); return; }
  infoBox.style.display="none"; shopArea.style.display="block";
 }
 
-products.forEach((p,i)=>{
- let opt=""; 
-for(let k=0.5; k<=5; k+=0.5){
-  opt+=`<option value="${k}" ${k===1 ? "selected" : ""}>${k} kg</option>`;
-}
+products.forEach((p, i) => {
+    let weightOptions = "";
+    for (let k = 0.5; k <= 5; k += 0.5) {
+        weightOptions += `<option value="${k}" ${k === 1 ? "selected" : ""}>${k} kg</option>`;
+    }
 
- productsDiv.innerHTML+=`<div class="product"><img src="${p.image}"><h4 style="text-align:center">${p.name}</h4><div class="price">${p.price.toLocaleString()} đ/kg</div><div style="padding:0 15px"><select id="q${i}">${opt}</select><button class="btn-add" onclick="add(${i})" style="margin-bottom:15px">➕ Thêm món</button></div></div>`;
+    // Kiểm tra nếu sản phẩm có loại phụ (như Lòng Nhồi)
+    let typeSelect = "";
+    if (p.subTypes) {
+        typeSelect = `<select id="t${i}" style="margin-bottom: 5px;">`;
+        p.subTypes.forEach(type => {
+            typeSelect += `<option value="${type}">${type}</option>`;
+        });
+        typeSelect += `</select>`;
+    }
+
+    productsDiv.innerHTML += `
+    <div class="product">
+        <img src="${p.image}">
+        <h4 style="text-align:center">${p.name}</h4>
+        <div class="price">${p.price.toLocaleString()} đ/kg</div>
+        <div style="padding:0 15px">
+            ${typeSelect} <select id="q${i}">${weightOptions}</select>
+            <button class="btn-add" onclick="add(${i})" style="margin-bottom:15px">➕ Thêm món</button>
+        </div>
+    </div>`;
 });
 
 function add(i){
