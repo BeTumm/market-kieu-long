@@ -3,42 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Market Kiều Long</title>
+<title>Market Kiều Lòng</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
- --red:#b71c1c;
- --gold:#ffb300;
- --dark:#2b1b17;
-}
-
+:root{--red:#b71c1c;--gold:#ffb300}
 *{box-sizing:border-box}
 
 body{
  margin:0;
- font-family:'Segoe UI',Arial,sans-serif;
- background:
-  linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
-  url("https://images.unsplash.com/photo-1551218808-94e220e084d2");
+ font-family:'Poppins',sans-serif;
+ background:linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
+ url("https://images.unsplash.com/photo-1551218808-94e220e084d2");
  background-size:cover;
  background-attachment:fixed;
- color:#fff;
+ color:#fff
 }
 
-/* HEADER */
 header{
  background:linear-gradient(135deg,#8e0000,#c62828);
  padding:22px;
  text-align:center;
  font-size:26px;
- font-weight:800;
- letter-spacing:2px;
- box-shadow:0 8px 25px rgba(0,0,0,.6)
+ font-weight:700;
 }
 
-/* SECTION */
 .section{
- background:rgba(255,255,255,.96);
+ background:#fff;
  color:#333;
  margin:20px;
  padding:20px;
@@ -46,42 +38,34 @@ header{
  box-shadow:0 15px 40px rgba(0,0,0,.5)
 }
 
-.section h3{
- text-align:center;
- color:#8e0000;
- margin-top:0;
-}
-
-/* FORM */
 input,textarea,select{
  width:100%;
  padding:14px;
  border-radius:16px;
- border:1px solid #ccc;
+ border:1px solid #ddd;
  margin-bottom:14px;
- font-size:15px
+ font-family:'Poppins',sans-serif;
 }
 
 button{
  width:100%;
- padding:16px;
+ padding:14px;
  border:none;
  border-radius:20px;
- font-size:16px;
- font-weight:800;
- cursor:pointer
+ font-weight:600;
+ cursor:pointer;
+ font-family:'Poppins',sans-serif;
+ transition: 0.3s;
 }
 
 .btn-main{
  background:linear-gradient(135deg,#ffca28,#ff9800);
- color:#4e342e;
- box-shadow:0 6px 18px rgba(0,0,0,.3)
+ color: #333;
 }
 
 .btn-add{
  background:linear-gradient(135deg,#c62828,#8e0000);
  color:#fff;
- box-shadow:0 6px 18px rgba(140,0,0,.6)
 }
 
 /* PRODUCTS */
@@ -92,16 +76,10 @@ button{
 }
 
 .product{
- background:linear-gradient(180deg,#fff,#fbe9e7);
+ background:#fff;
  border-radius:26px;
  overflow:hidden;
- box-shadow:0 12px 30px rgba(0,0,0,.45);
- transition:.25s;
- position:relative
-}
-
-.product:hover{
- transform:translateY(-8px)
+ box-shadow:0 12px 30px rgba(0,0,0,.45)
 }
 
 .product img{
@@ -110,131 +88,175 @@ button{
  object-fit:cover
 }
 
-.product::after{
- content:"";
- position:absolute;
- top:0;left:0;right:0;
- height:90px;
- background:linear-gradient(180deg,rgba(0,0,0,.45),transparent)
-}
-
-.product h4{
- margin:14px 12px 6px;
- text-align:center;
- font-size:18px;
- color:#4e342e
-}
-
 .price{
  text-align:center;
- font-size:18px;
- font-weight:800;
- color:#b71c1c;
- margin-bottom:8px
-}
-
-.product select{
- margin:0 14px 10px;
- width:calc(100% - 28px)
-}
-
-.product button{
- margin:0 14px 14px;
- width:calc(100% - 28px)
-}
-
-/* ORDER */
-#orderList li{
- list-style:none;
- background:linear-gradient(135deg,#fff3e0,#ffe0b2);
- margin-bottom:12px;
- padding:14px;
- border-radius:18px;
- display:flex;
- justify-content:space-between;
- align-items:center
-}
-
-.remove{
- background:linear-gradient(135deg,#ff5252,#c62828);
- color:#fff;
- border:none;
- width:28px;
- height:28px;
- border-radius:50%;
- font-size:16px;
  font-weight:700;
- cursor:pointer;
+ color:#b71c1c;
+ margin-bottom:8px;
+}
+
+/* CART ICON */
+#cartIcon{
+ position:fixed;
+ bottom:22px;
+ right:22px;
+ width:60px;
+ height:60px;
+ border-radius:50%;
+ background:linear-gradient(135deg,#ff9800,#f44336);
  display:flex;
  align-items:center;
  justify-content:center;
- box-shadow:0 4px 12px rgba(0,0,0,.35);
- transition:.2s;
+ font-size:26px;
+ font-weight:700;
+ cursor:pointer;
+ z-index:9999;
+ box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-.remove:hover{
- transform:scale(1.15);
- background:linear-gradient(135deg,#ff1744,#b71c1c);
+#cartCount{
+ position:absolute;
+ top:-6px;
+ right:-6px;
+ background:#000;
+ width:22px;
+ height:22px;
+ border-radius:50%;
+ font-size:13px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ color: #fff;
 }
 
+/* MODAL */
+.modal{
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.65);
+ display:none;
+ align-items:center;
+ justify-content:center;
+ z-index:9999;
+}
 
-#totalMoney{
- text-align:center;
- font-size:22px;
- font-weight:900;
- color:#8e0000;
- margin:16px 0
+.modal-box{
+ background:#fff;
+ color:#333;
+ width:95%;
+ max-width:420px;
+ border-radius:26px;
+ padding:22px;
+ max-height: 90vh;
+ overflow-y: auto;
+}
+
+/* ORDER LIST */
+#orderList { padding: 0; }
+#orderList li {
+    list-style: none;
+    background: #fffaf0;
+    margin-bottom: 12px;
+    padding: 15px 18px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ffe0b2;
+}
+
+/* NÚT ĐIỀU CHỈNH SỐ LƯỢNG (+/-) */
+.qty-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 8px;
+    background: #eee;
+    color: #333;
+    font-size: 18px;
+    line-height: 28px;
+}
+.qty-btn:hover { background: #ddd; }
+
+/* NÚT XOÁ */
+.remove-all {
+    background: transparent;
+    color: #bbb;
+    font-size: 14px;
+    width: auto;
+    padding: 5px;
+}
+.remove-all:hover { color: #c62828; }
+
+#qrBox {
+    text-align: center;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 15px 0;
+}
+#qrBox img {
+    display: block;
+    margin: 0 auto 10px auto;
+    border: 5px solid #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 </style>
 </head>
 
 <body>
 
-<header>🍽️ MARKET KIỀU LONG</header>
+<header>🍽️ MARKET KIỀU LÒNG</header>
 
-<!-- INFO -->
 <div class="section" id="infoBox">
-<h3>👤 Thông tin khách hàng</h3>
-<input id="customerName" placeholder="Họ và tên *">
-<input id="customerPhone" placeholder="Số điện thoại *">
-<textarea id="customerAddress" placeholder="Địa chỉ giao hàng *"></textarea>
+<h3 style="text-align:center">👤 Thông tin giao hàng</h3>
+<input id="customerName" placeholder="Họ tên">
+<input id="customerPhone" placeholder="Số điện thoại">
+<textarea id="customerAddress" placeholder="Địa chỉ giao hàng"></textarea>
 <button class="btn-main" onclick="startShopping()">Bắt đầu chọn món</button>
 </div>
 
-<!-- SHOP -->
 <div id="shopArea" style="display:none">
-
 <div class="section">
-<h3>🛍️ Thực đơn hôm nay</h3>
+<h3 style="text-align:center">🛍️ Thực đơn</h3>
 <div class="products" id="products"></div>
 </div>
+</div>
 
-<div class="section">
-<h3>🧾 Đơn hàng</h3>
+<div id="cartIcon" onclick="openCart()">🛒<span id="cartCount">0</span></div>
+
+<div class="modal" id="cartModal">
+<div class="modal-box">
+<h3 style="text-align:center; color:#c62828">🧾 Giỏ hàng</h3>
 <ul id="orderList"></ul>
-<div id="totalMoney">💰 Tổng tiền: 0 đ</div>
-<textarea id="note" placeholder="Ghi chú thêm (nếu có)"></textarea>
-<button class="btn-main" onclick="sendOrder()">Gửi đơn hàng</button>
-</div>
-
-<div class="section" id="paymentBox" style="display:none;text-align:center">
-<h3>💳 Thanh toán</h3>
-<button class="btn-add" onclick="alert('Thanh toán khi nhận hàng')">🚚 Thanh toán khi nhận</button>
-<button style="background:#e53935;color:#fff" onclick="showQR()">📱 Thanh toán QR</button>
-<div id="qrBox" style="display:none;margin-top:14px">
-<img src="qr.jpg" style="width:240px;border-radius:14px">
+<div id="totalMoney" style="text-align:center; font-weight:bold; font-size:18px; margin: 15px 0;">💰 Tổng: 0 đ</div>
+<textarea id="note" placeholder="Ghi chú thêm..."></textarea>
+<button class="btn-main" onclick="sendOrder()" style="margin-bottom:10px">📤 Gửi đơn hàng</button>
+<button onclick="closeCart()" style="background:#eee">Tiếp tục chọn</button>
 </div>
 </div>
 
+<div class="modal" id="paymentModal">
+<div class="modal-box">
+<h3 style="text-align:center">💳 Thanh toán</h3>
+<button class="btn-add" onclick="payCOD()" style="margin-bottom:15px">🚚 Thanh toán khi nhận hàng</button>
+<button style="background:#e53935; color:#fff" onclick="payQR()">📱 Thanh toán qua mã QR</button>
+<div id="qrBox" style="display:none;">
+<img src="qr.jpg" style="width:240px; border-radius:14px">
+<p><strong>Cửa hàng Kiều Lòng</strong></p>
+</div>
+<button onclick="closePayment()" style="background:#eee; margin-top:10px">Hoàn tất</button>
+</div>
 </div>
 
 <script>
 const BOT_TOKEN="8365554346:AAGJdRnQ9sbp2EQIGtP289uwuBwEp3bg-kE";
 const CHAT_ID="6572363141";
 
+let lastOrderMessage="";
+const order={};
+
 const products=[
- {name:"Lòng Mỡ",price:70000,image:"https://cly.1cdn.vn/2022/01/29/s1.media.ngoisao.vn-resize_660-news-2022-01-28-_long-luoc-4-ngoisaovn-w2048-h1536.jpg"},
- {name:"Lòng Tiết",price:70000,image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEdc9U2P7U89S6tDGnvM6LvOdOC9Y_mhuT5A&s"},
  {name:"Gan Lợn",price:50000,image:"https://media.cooky.vn/article/s640/Article1302-635894058266480200.jpg"},
  {name:"Phổi Lợn",price:30000,image:"https://bhd.1cdn.vn/2021/09/10/files-library-images-site-1-20210910-web-bo-phan-o-lon-tuyet-doi-phai-bo-keo-ca-nha-ung-thu-30-161959.jpg"},
  {name:"Chí Đá",price:450000,image:"https://cdn2.fptshop.com.vn/unsafe/800x0/bi_quyet_luoc_trang_lon_03_82bd2e013b.jpg"},
@@ -245,105 +267,84 @@ const products=[
  {name:"Đầu Lòng Non",price:200000,image:"https://cdn.tgdd.vn/Files/2022/02/11/1414960/long-se-dieu-la-gi-gia-long-se-dieu-cach-luoc-long-se-dieu-dung-chuan-202202111353265979.jpg"},
  {name:"Nõn Đuôi",price:150000,image:"https://img-global.cpcdn.com/recipes/591f2d32d911a1b5/680x781cq80/kh%E1%BA%A5u-duoi-heo-pha-l%E1%BA%A5u-recipe-main-photo.jpg"},
  {name:"Dạ Dày",price:370000,image:"https://cdn.tgdd.vn/Files/2019/12/27/1228778/2-cach-luoc-bao-tu-heo-gion-ngon-ban-nen-biet--760x367.jpg"},
- {name:"Cổ Hũ",price:400000,image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMJJOAGhMac3lZd-JmlEVfx8j_8xFsPueJJw&s"}
+ {name:"Cổ Hũ",price:400000,image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMJJOAGhMac3lZd-JmlEVfx8j_8xFsPueJJw&s"},
+ {name:"Lá Lách Lợn",price:20000,image:"https://cdn.24h.com.vn/upload/2-2021/images/2021-05-07/Phan-nay-cua-con-lon-rat-bo-duong-cho-la-lach-va-da-day-lam-mon-nhau-cung-rat-tuyet-1-1620380256-518-width640height426.jpeg"},
+ {name:"Đuôi Lợn",price:20000,image:"https://danviet.ex-cdn.com/files/f1/296231569849192448/2022/6/29/duoi-lon-16564625234451740961109.jpg"},
 ];
 
-const order={},productsDiv=document.getElementById("products");
+const productsDiv=document.getElementById("products");
 
 function startShopping(){
- if(!customerName.value||!customerPhone.value||!customerAddress.value){
-  alert("Vui lòng nhập đầy đủ thông tin");
-  return;
- }
- infoBox.style.display="none";
- shopArea.style.display="block";
+ if(!customerName.value || !customerPhone.value || !customerAddress.value) { alert("Vui lòng nhập đủ thông tin!"); return; }
+ infoBox.style.display="none"; shopArea.style.display="block";
 }
 
 products.forEach((p,i)=>{
- let opt="";
- for(let k=1;k<=10;k+=0.5) opt+=`<option>${k} kg</option>`;
- productsDiv.innerHTML+=`
- <div class="product">
-  <img src="${p.image}">
-  <h4>${p.name}</h4>
-  <div class="price">${p.price.toLocaleString()} đ/kg</div>
-  <select id="q${i}">${opt}</select>
-  <button class="btn-add" onclick="add(${i})">➕ Thêm món</button>
- </div>`;
+ let opt=""; for(let k=0.5; k<=5; k+=0.5) opt+=`<option value="${k}">${k} kg</option>`;
+ productsDiv.innerHTML+=`<div class="product"><img src="${p.image}"><h4 style="text-align:center">${p.name}</h4><div class="price">${p.price.toLocaleString()} đ/kg</div><div style="padding:0 15px"><select id="q${i}">${opt}</select><button class="btn-add" onclick="add(${i})" style="margin-bottom:15px">➕ Thêm món</button></div></div>`;
 });
 
 function add(i){
  let q=parseFloat(document.getElementById("q"+i).value);
- let n=products[i].name,p=products[i].price;
+ let n=products[i].name, p=products[i].price;
  order[n]?order[n].qty+=q:order[n]={qty:q,price:p};
- render();
+ render(); updateCart();
+}
+
+// HÀM TĂNG/GIẢM TRỰC TIẾP TRONG GIỎ HÀNG
+function changeQty(name, amount){
+    order[name].qty += amount;
+    if(order[name].qty <= 0) delete order[name];
+    render(); updateCart();
 }
 
 function render(){
- orderList.innerHTML="";
- let total=0;
+ orderList.innerHTML=""; let total=0;
  for(let i in order){
-  let m=order[i].qty*order[i].price;
-  total+=m;
+  let m=order[i].qty*order[i].price; total+=m;
   orderList.innerHTML+=`
   <li>
-   <span>${i}<br>${order[i].qty} kg</span>
-   <b>${m.toLocaleString()} đ</b>
-   <button class="remove" onclick="delete order['${i}'],render()">×</button>
+    <div><strong>${i}</strong><br><small>${order[i].price.toLocaleString()}đ/kg</small></div>
+    <div style="display:flex; align-items:center; gap:10px">
+        <button class="qty-btn" onclick="changeQty('${i}', -0.5)">-</button>
+        <b style="min-width:45px; text-align:center">${order[i].qty}kg</b>
+        <button class="qty-btn" onclick="changeQty('${i}', 0.5)">+</button>
+        <b style="color:#b71c1c; min-width:80px; text-align:right">${m.toLocaleString()}đ</b>
+    </div>
   </li>`;
  }
- totalMoney.innerHTML=`💰 Tổng tiền: ${total.toLocaleString()} đ`;
+ totalMoney.innerHTML=`💰 Tổng cộng: ${total.toLocaleString()} đ`;
 }
+
+function updateCart(){
+ let c=0; for(let i in order) c++; cartCount.innerText=c;
+}
+
+function openCart(){render(); cartModal.style.display="flex"}
+function closeCart(){cartModal.style.display="none"}
 
 function sendOrder(){
-  if(Object.keys(order).length === 0){
-    alert("❌ Chưa có sản phẩm nào trong đơn");
-    return;
-  }
+ if(Object.keys(order).length === 0){ alert("Giỏ hàng trống!"); return; }
+ let msg=`🛒 ĐƠN HÀNG MỚI\n👤 Khách: ${customerName.value}\n📞 SĐT: ${customerPhone.value}\n📍 ĐC: ${customerAddress.value}\n\n`;
+ let total=0;
+ for(let i in order){
+  let m=order[i].qty*order[i].price; total+=m;
+  msg+=`- ${i}: ${order[i].qty}kg = ${m.toLocaleString()}đ\n`;
+ }
+ msg+=`\n💰 Tổng: ${total.toLocaleString()}đ\n📝 Ghi chú: ${note.value||"Không có"}`;
+ lastOrderMessage=msg;
 
-  let msg = `🛒 ĐƠN HÀNG MỚI\n\n` +
-            `👤 Tên: ${customerName.value}\n` +
-            `📞 SĐT: ${customerPhone.value}\n` +
-            `📍 Địa chỉ: ${customerAddress.value}\n\n` +
-            `📦 CHI TIẾT ĐƠN:\n`;
-
-  let total = 0;
-  for(let i in order){
-    let money = order[i].qty * order[i].price;
-    total += money;
-    msg += `- ${i}: ${order[i].qty} kg = ${money.toLocaleString()} đ\n`;
-  }
-
-  msg += `\n💰 TỔNG TIỀN: ${total.toLocaleString()} đ\n`;
-msg += `📝 Ghi chú: ${note.value || "Không có"}`;
-
-
-  fetch("https://api.telegram.org/bot8365554346:AAGJdRnQ9sbp2EQIGtP289uwuBwEp3bg-kE/sendMessage",{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({
-      chat_id: "6572363141",
-      text: msg
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if(data.ok){
-      alert("✅ Đã gửi đơn hàng thành công");
-      paymentBox.style.display="block";
-    }else{
-      alert("❌ Telegram lỗi: " + data.description);
-      console.error(data);
-    }
-  })
-  .catch(err=>{
-    alert("❌ Không kết nối được Telegram");
-    console.error(err);
-  });
+ fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+  method:"POST",headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({chat_id:CHAT_ID,text:msg})
+ }).then(()=>{ closeCart(); paymentModal.style.display="flex"; });
 }
-function showQR(){qrBox.style.display="block";}
+
+function payCOD(){sendPay("🚚 Thanh toán khi nhận"); alert("Đơn hàng đã được xác nhận!"); closePayment()}
+function payQR(){sendPay("📱 Chọn Thanh toán QR"); qrBox.style.display="block"}
+function sendPay(m){ fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{ method:"POST",headers:{'Content-Type':'application/json'}, body:JSON.stringify({chat_id:CHAT_ID,text:lastOrderMessage+"\n\n💳 "+m}) }); }
+function closePayment(){paymentModal.style.display="none"; qrBox.style.display="none";}
 </script>
 
 </body>
 </html>
-
