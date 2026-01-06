@@ -128,7 +128,40 @@ button{
  justify-content:center;
  color: #fff;
 }
+/* HOTLINE ICON */
+#hotlineIcon {
+  position: fixed;
+  bottom: 95px; /* Cách đáy màn hình 95px để nằm trên nút giỏ hàng */
+  right: 22px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  z-index: 9999;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  text-decoration: none;
+  /* Hiệu ứng rung nhẹ thu hút sự chú ý */
+  animation: shake 2s infinite;
+}
 
+@keyframes shake {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(-10deg); }
+  20% { transform: rotate(10deg); }
+  30% { transform: rotate(-10deg); }
+  40% { transform: rotate(10deg); }
+  50% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+#hotlineIcon:hover {
+  background: #27ae60;
+  transform: scale(1.1);
+}
 /* MODAL */
 .modal{
  position:fixed;
@@ -206,6 +239,7 @@ button{
 
 <body>
 
+
 <header>🍽️ MARKET KIỀU LÒNG</header>
 
 <div class="section" id="infoBox">
@@ -222,6 +256,9 @@ button{
 <div class="products" id="products"></div>
 </div>
 </div>
+<a href="tel:0977487543" id="hotlineIcon">
+  <span class="phone-icon">📞</span>
+</a>
 
 <div id="cartIcon" onclick="openCart()">🛒<span id="cartCount">0</span></div>
 
@@ -268,11 +305,82 @@ const products=[
  {name:"Nõn Đuôi",price:150000,image:"https://img-global.cpcdn.com/recipes/591f2d32d911a1b5/680x781cq80/kh%E1%BA%A5u-duoi-heo-pha-l%E1%BA%A5u-recipe-main-photo.jpg"},
  {name:"Dạ Dày",price:370000,image:"https://cdn.tgdd.vn/Files/2019/12/27/1228778/2-cach-luoc-bao-tu-heo-gion-ngon-ban-nen-biet--760x367.jpg"},
  {name:"Cổ Hũ",price:400000,image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMJJOAGhMac3lZd-JmlEVfx8j_8xFsPueJJw&s"},
- {name:"Lá Lách Lợn",price:20000,image:"https://cdn.24h.com.vn/upload/2-2021/images/2021-05-07/Phan-nay-cua-con-lon-rat-bo-duong-cho-la-lach-va-da-day-lam-mon-nhau-cung-rat-tuyet-1-1620380256-518-width640height426.jpeg"},
- {name:"Đuôi Lợn",price:20000,image:"https://danviet.ex-cdn.com/files/f1/296231569849192448/2022/6/29/duoi-lon-16564625234451740961109.jpg"},
+ {name:"Lá Lách Lợn",price:30000,image:"https://cdn.24h.com.vn/upload/2-2021/images/2021-05-07/Phan-nay-cua-con-lon-rat-bo-duong-cho-la-lach-va-da-day-lam-mon-nhau-cung-rat-tuyet-1-1620380256-518-width640height426.jpeg"},
+ {name:"Đuôi Lợn",price:150000,image:"https://danviet.ex-cdn.com/files/f1/296231569849192448/2022/6/29/duoi-lon-16564625234451740961109.jpg"},
 ];
 
 const productsDiv=document.getElementById("products");
+// 1. Lấy thông tin nguồn, thiết bị, IP ngay khi tải trang
+const urlParams = new URLSearchParams(window.location.search);
+const nguonTruyCap = urlParams.get('s') === 'qr' ? "Quét mã QR" : "Bấm đường Link";
+
+function getDevice() {
+    const ua = navigator.userAgent;
+    if (/android/i.test(ua)) return "Android";
+    if (/iPhone|iPad|iPod/i.test(ua)) return "iOS";
+    return "Máy tính/Khác";
+}
+
+let customerIP = "0.0.0.0";
+fetch('https://api.ipify.org?format=json')
+    .then(res => res.json()).then(data => customerIP = data.ip)
+    .catch(() => customerIP = "Ẩn danh");
+
+// 2. Hàm gửi dữ liệu khi nhấn thanh toán
+// Đảm bảo URL này là link Web App mới nhất sau khi bạn Deploy lại ở bước trên
+const GOOGLE_APP_URL = "https://script.google.com/macros/s/AKfycbwDAalCA5zLjHqFcIHXaBkc9GXNc4im1wvannW8NzPUNCoxpZYxNYXxjkISpWRNK-G4/exec";
+
+function sendPay(methodName) {
+    // Thu thập dữ liệu đơn hàng
+    let orderDetail = "";
+    let totalValue = 0;
+    for (let i in order) {
+        orderDetail += `${i} (${order[i].qty}kg); `;
+        totalValue += order[i].qty * order[i].price;
+    }
+
+    // Đối tượng dữ liệu khớp với hàm doPost trong Apps Script
+    const dataToSheet = {
+        name: document.getElementById("customerName").value,
+        phone: document.getElementById("customerPhone").value,
+        address: document.getElementById("customerAddress").value,
+        orderDetail: orderDetail,
+        total: totalValue.toLocaleString() + "đ",
+        method: methodName,
+        source: nguonTruyCap, // Biến này lấy từ URL ?s=qr
+        device: getDeviceInfo(),
+        ip: customerIP
+    };
+
+    // Gửi dữ liệu sang Google Sheet
+    fetch(GOOGLE_APP_URL, {
+        method: "POST",
+        mode: "no-cors", // Bắt buộc có để tránh lỗi CORS
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dataToSheet)
+    }).then(() => {
+        console.log("Đã gửi đơn hàng lên Sheet thành công");
+    });
+
+    // Gửi Telegram (Giữ nguyên phần cũ của bạn)
+    const teleMsg = lastOrderMessage + `\n\n💳 ${methodName}\n📱 Thiết bị: ${dataToSheet.device}\n📍 Nguồn: ${nguonTruyCap}`;
+    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: teleMsg })
+    });
+
+    if(methodName.includes("QR")) {
+        qrBox.style.display = "block";
+    } else {
+        alert("Cảm ơn! Đơn hàng của bạn đã được Kiều Lòng tiếp nhận.");
+        location.reload(); // Tải lại trang để làm trống giỏ hàng
+    }
+}
+
+    // Phần gửi Telegram của bạn...
+    alert("Đơn hàng đang được gửi đi!");
+}
 
 function startShopping(){
  if(!customerName.value || !customerPhone.value || !customerAddress.value) { alert("Vui lòng nhập đủ thông tin!"); return; }
@@ -280,7 +388,11 @@ function startShopping(){
 }
 
 products.forEach((p,i)=>{
- let opt=""; for(let k=0.5; k<=5; k+=0.5) opt+=`<option value="${k}">${k} kg</option>`;
+ let opt=""; 
+for(let k=0.5; k<=5; k+=0.5){
+  opt+=`<option value="${k}" ${k===1 ? "selected" : ""}>${k} kg</option>`;
+}
+
  productsDiv.innerHTML+=`<div class="product"><img src="${p.image}"><h4 style="text-align:center">${p.name}</h4><div class="price">${p.price.toLocaleString()} đ/kg</div><div style="padding:0 15px"><select id="q${i}">${opt}</select><button class="btn-add" onclick="add(${i})" style="margin-bottom:15px">➕ Thêm món</button></div></div>`;
 });
 
