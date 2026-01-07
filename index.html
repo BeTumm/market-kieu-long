@@ -234,6 +234,24 @@ button{
     border: 5px solid #fff;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
+.store-bar{
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  background:#fff;
+  color:#333;
+  padding:10px 18px;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:500;
+  cursor:pointer;
+  box-shadow:0 6px 20px rgba(0,0,0,.18);
+}
+.store-bar span{
+  color:#c62828;
+  font-weight:600;
+}
+
 </style>
 </head>
 
@@ -241,6 +259,12 @@ button{
 
 
 <header>🍽️ MARKET KIỀU LÒNG</header>
+<div class="section" style="background:#fff7e6; padding:12px">
+  <p style="text-align:center; color:#b71c1c; margin:0; font-weight:600">
+    🕒 Mở cửa: <b>7h – 20h</b> &nbsp;|&nbsp;
+    🚗 Nhận ship quanh khu vực <b>Tp Hải Dương</b>
+  </p>
+</div>
 
 <div class="section" id="infoBox">
 <h3 style="text-align:center">👤 Thông tin giao hàng</h3>
@@ -248,7 +272,30 @@ button{
 <input id="customerPhone" placeholder="Số điện thoại">
 <textarea id="customerAddress" placeholder="Địa chỉ giao hàng"></textarea>
 <button class="btn-main" onclick="startShopping()">Bắt đầu chọn món</button>
+<div style="
+  background: #f1f8e9; 
+  margin: 20px 0 0 0; 
+  padding: 12px; 
+  border-radius: 16px; 
+  text-align: center; 
+  border: 1px dashed #2e7d32;
+  width: 100%;
+">
+  <p style="margin: 0; color: #2e7d32; font-size: 14px; font-weight: 600;">
+    🌿 Cam kết: Lòng sạch mỗi ngày - Cân đúng trọng lượng
+  </p>
 </div>
+</div>
+<div style="text-align:center; margin:15px 20px">
+  <div class="store-bar" onclick="openMap()">
+    📍 <b>Kiều Lòng – 34 Lê Hồng Phong , Phường Thành Đông, TP Hải Dương</b>
+  </div>
+
+
+</small>
+
+</div>
+
 
 <div id="shopArea" style="display:none">
 <div class="section">
@@ -267,7 +314,16 @@ button{
 <h3 style="text-align:center; color:#c62828">🧾 Giỏ hàng</h3>
 <ul id="orderList"></ul>
 <div id="totalMoney" style="text-align:center; font-weight:bold; font-size:18px; margin: 15px 0;">💰 Tổng: 0 đ</div>
-<textarea id="note" placeholder="Ghi chú thêm..."></textarea>
+<small style="display:block; color:#999; margin-bottom:6px; text-align:center">
+  ⚠️ Nếu mua theo yêu cầu (lấy ít, theo bát, theo lạng…), vui lòng nhập vào ghi chú bên dưới
+</small>
+
+<textarea 
+  id="note" 
+  placeholder="VD: Lòng non 2 lạng, gan 1 bát, cuống họng lấy ít ăn thử">
+</textarea>
+
+
 <button class="btn-main" onclick="sendOrder()" style="margin-bottom:10px">📤 Gửi đơn hàng</button>
 <button onclick="closeCart()" style="background:#eee">Tiếp tục chọn</button>
 </div>
