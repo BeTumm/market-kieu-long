@@ -459,7 +459,14 @@ function sendOrder(){
  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
   method:"POST",headers:{'Content-Type':'application/json'},
   body:JSON.stringify({chat_id:CHAT_ID,text:msg})
- }).then(()=>{ closeCart(); paymentModal.style.display="flex"; });
+ }).then(() => {
+  closeCart();
+
+  alert("✅ Đặt hàng thành công!\nVui lòng chọn phương thức thanh toán.");
+
+  paymentModal.style.display = "flex";
+});
+
 }
 
 function payCOD(){sendPay("🚚 Thanh toán khi nhận"); alert("Đơn hàng đã được xác nhận!"); closePayment()}
