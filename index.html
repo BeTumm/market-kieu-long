@@ -410,6 +410,22 @@ function payCOD(){sendPay("🚚 Thanh toán khi nhận"); alert("Đơn hàng đ�
 function payQR(){sendPay("📱 Chọn Thanh toán QR"); qrBox.style.display="block"}
 function sendPay(m){ fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{ method:"POST",headers:{'Content-Type':'application/json'}, body:JSON.stringify({chat_id:CHAT_ID,text:lastOrderMessage+"\n\n💳 "+m}) }); }
 function closePayment(){paymentModal.style.display="none"; qrBox.style.display="none";}
+function getDevice() {
+  return /mobile|android|iphone/i.test(navigator.userAgent)
+    ? "Thiết bị di động"
+    : "Máy tính";
+}
+
+window.addEventListener("load", () => {
+  fetch("https://script.google.com/macros/s/AKfycbzYsyD_pPBUrSb_B5_2u4y9iSkr_nIThVYU06ntp3vP0qad7Tg5SiBZT6apwfVi_mi2/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      source: "Bấm đường link",
+      device: getDevice()
+    })
+  });
+});
 </script>
 
 </body>
