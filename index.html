@@ -251,6 +251,25 @@ button{
   color:#c62828;
   font-weight:600;
 }
+.site-header{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  background:linear-gradient(135deg,#8e0000,#c62828);
+  padding:18px;
+  font-size:24px;
+  font-weight:700;
+  color:#fff;
+}
+
+.site-header .logo{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:#fff;
+  padding:3px;
+}
 
 </style>
 </head>
@@ -258,7 +277,11 @@ button{
 <body>
 
 
-<header>🍽️ MARKET KIỀU LÒNG</header>
+<header class="site-header">
+  <img src="logo.png" alt="Market Kiều Lòng" class="logo">
+  <span>MARKET KIỀU LÒNG</span>
+</header>
+
 <div class="section" style="background:#fff7e6; padding:12px">
   <p style="text-align:center; color:#b71c1c; margin:0; font-weight:600">
     🕒 Mở cửa: <b>7h – 20h</b> &nbsp;|&nbsp;
@@ -352,7 +375,7 @@ const order={};
 const products=[
  {
   name: "Lòng Nhồi", 
-  price: 50000, 
+  price: 70000, 
   image: "https://dienmayhoki.com/wp-content/uploads/2023/10/cach-lam-doi-heo-1.jpg",
   subTypes: ["Lòng Mỡ", "Lòng Tiết"] // Thêm dòng này
  },
